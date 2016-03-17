@@ -1,16 +1,22 @@
 # Language setting
 language: node_js
 
+node_js:
+  - 0.10
+
 build:
   ci:
     - echo 'CI is running'
+    - ./pushBuildInfo.sh
   post_ci:
       # Pushing to 2 different registries
       # DockerHub
+      - sed -i -- 's/\[REGISTRY_NAME\]/DockerHub/g' views/index.ejs
       - docker build -t="harryi3t/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER" .
       - docker push harryi3t/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER
       # ECR
-      - docker tag harryi3t/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER 480971114143.dkr.ecr.us-east-1.amazonaws.com/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER
+      - sed -i -- 's/DockerHub/ECR/g' views/index.ejs
+      - docker build -t="480971114143.dkr.ecr.us-east-1.amazonaws.com/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER" .
       - docker push 480971114143.dkr.ecr.us-east-1.amazonaws.com/sample_node_eb_docker:$BRANCH.$BUILD_NUMBER
 
 integrations:

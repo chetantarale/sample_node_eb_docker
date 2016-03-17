@@ -24,3 +24,6 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#09AE5C', endColorstr='#09AE5C', GradientType=0);
   background-repeat: repeat-x;
 }
+#info_box span{
+  color: #000;
+}
